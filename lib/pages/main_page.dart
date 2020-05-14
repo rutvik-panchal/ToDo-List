@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:todoapp/data/Notes.dart';
+import 'package:todoapp/db_helper.dart';
 import 'package:todoapp/pages/add_note_page.dart';
 import 'package:todoapp/widgets/todo_list_box.dart';
 
@@ -11,6 +13,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  DatabaseHelper databaseHelper = DatabaseHelper();
   List<Notes> notesList;
 
   @override
@@ -18,8 +21,7 @@ class _MainPageState extends State<MainPage> {
     Size _size = MediaQuery.of(context).size;
     if (notesList == null) {
       notesList = List<Notes>();
-      notesList.add(Notes('Title', 'Blah Blah', false));
-      notesList.add(Notes('Happyyyyyyy', 'Test', true));
+      updateNotesList();
     }
     return Scaffold(
       appBar: AppBar(
@@ -31,10 +33,10 @@ class _MainPageState extends State<MainPage> {
           : Container(
               width: _size.width,
               height: _size.height,
-              padding: EdgeInsets.only(top: 10, bottom: 10),
               child: ListView.builder(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
                 itemCount: notesList.length,
-                itemBuilder:  (context, index) {
+                itemBuilder: (context, index) {
                   Notes note = notesList[index];
                   return ToDoListBox(note.title, note.description, note.isDone);
                 },
@@ -51,6 +53,34 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+  void updateNotesList() {
+    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<Notes>> noteListFuture = databaseHelper.getNotesList();
+      noteListFuture.then((noteList) {
+        setState(() {
+          this.notesList = noteList;
+        });
+      });
+    });
+  }
+
+  void addNotesList() {
+    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    dbFuture.then((database) {
+      Future<int> addNoteFuture = databaseHelper.insertNote(Notes(4,"test","test",true));
+      addNoteFuture.then((noteList){
+        Future<List<Notes>> noteListFuture = databaseHelper.getNotesList();
+        noteListFuture.then((noteList) {
+          setState(() {
+            this.notesList = noteList;
+          });
+        });
+      });
+
+    });
+  }
 }
 
 Widget noNotesMessage = Container(
@@ -60,8 +90,12 @@ Widget noNotesMessage = Container(
       children: <Widget>[
         Image.asset('assets/graphics/no_notes.png', width: 150, height: 150),
         SizedBox(height: 10),
-        Text('All work done!', style: TextStyle(fontSize: 15, color: Colors.grey[400]),),
+        Text(
+          'All work done!',
+          style: TextStyle(fontSize: 15, color: Colors.grey[400]),
+        ),
       ],
     ),
   ),
 );
+
