@@ -57,7 +57,6 @@ class DatabaseHelper {
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
       return Notes(
-        maps[i]['id'],
         maps[i]['title'],
         maps[i]['description'],
         maps[i]['isdone'] == 1? true:false,

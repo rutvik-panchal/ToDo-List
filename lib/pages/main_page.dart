@@ -44,14 +44,21 @@ class _MainPageState extends State<MainPage> {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddNotePage()));
+          navigateToAddNotes();
         },
         child: Icon(Icons.add),
         heroTag: "Add Notes",
         backgroundColor: Colors.indigo,
       ),
     );
+  }
+
+  void navigateToAddNotes() async {
+    final result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AddNotePage()));
+    if (result != null) {
+      addNotesList(result);
+    }
   }
 
   void updateNotesList() {
@@ -66,11 +73,11 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  void addNotesList() {
+  void addNotesList(Notes note) {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
-      Future<int> addNoteFuture = databaseHelper.insertNote(Notes(4,"test","test",true));
-      addNoteFuture.then((noteList){
+      Future<int> addNoteFuture = databaseHelper.insertNote(note);
+      addNoteFuture.then((noteList) {
         Future<List<Notes>> noteListFuture = databaseHelper.getNotesList();
         noteListFuture.then((noteList) {
           setState(() {
@@ -78,7 +85,6 @@ class _MainPageState extends State<MainPage> {
           });
         });
       });
-
     });
   }
 }
@@ -98,4 +104,3 @@ Widget noNotesMessage = Container(
     ),
   ),
 );
-

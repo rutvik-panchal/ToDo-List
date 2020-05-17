@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/data/Notes.dart';
 
 class AddNotePage extends StatelessWidget {
   final titleController = TextEditingController();
@@ -61,6 +62,8 @@ class AddNotePage extends StatelessWidget {
                     String title = titleController.text.trim();
                     String description = descController.text.trim();
                     if (title.isNotEmpty && description.isNotEmpty) {
+                      Notes note = Notes(title, description, false);
+                      Navigator.pop(context, note);
                     } else {
                       Scaffold.of(context).showSnackBar(snackBar);
                     }
