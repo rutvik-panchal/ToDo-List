@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AddNotePage extends StatefulWidget {
-  AddNotePage();
+class AddNotePage extends StatelessWidget {
 
-  @override
-  _AddNotePageState createState() => _AddNotePageState();
-}
+  final titleController = TextEditingController();
+  final descController = TextEditingController();
 
-class _AddNotePageState extends State<AddNotePage> {
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
@@ -20,31 +17,54 @@ class _AddNotePageState extends State<AddNotePage> {
       body: Container(
         width: _size.width,
         height: _size.height,
-        padding: EdgeInsets.only(
-          top: 10,
-          bottom: 15,
-          left: 10,
-          right: 10,
-        ),
         child: Column(
           children: <Widget>[
             Expanded(
               child: SingleChildScrollView(
+                child: Padding (
+                  padding: EdgeInsets.all(10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Image.asset('assets/graphics/add_notes.png',
                         width: 200, height: 200),
-                    title,
+                    TextField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Title',
+                      ),
+                    ),
                     SizedBox(height: 10),
-                    subtitle,
+                    TextField(
+                      controller: descController,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Description',
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
+            ),),
             RaisedButton(
-              onPressed: () {},
+              onPressed: () {
+                final snackBar = SnackBar(
+                  content: Text(
+                    'Please enter all the fields!'
+                  ),
+                );
+                String title = titleController.text.trim();
+                String description = descController.text.trim();
+                if (title.isNotEmpty && description.isNotEmpty) {
+
+                } else {
+
+                }
+                Scaffold.of(context).showSnackBar(snackBar);
+              },
               color: Theme.of(context).primaryColor,
               child: Container(
                 width: _size.width,
@@ -67,17 +87,3 @@ class _AddNotePageState extends State<AddNotePage> {
   }
 }
 
-Widget title = TextField(
-  decoration: InputDecoration(
-    border: OutlineInputBorder(),
-    labelText: 'Title',
-  ),
-);
-
-Widget subtitle = TextField(
-  maxLines: null,
-  decoration: InputDecoration(
-    border: OutlineInputBorder(),
-    labelText: 'Description',
-  ),
-);
