@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/data/Notes.dart';
+import 'package:todoapp/data/models/Notes.dart';
 
 class AddNotePage extends StatelessWidget {
   final titleController = TextEditingController();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:todoapp/data/Notes.dart';
+import 'package:todoapp/data/models/Notes.dart';
 import 'package:todoapp/data/db_helper.dart';
 import 'package:todoapp/pages/add_note_page.dart';
 import 'package:todoapp/widgets/todo_list_box.dart';

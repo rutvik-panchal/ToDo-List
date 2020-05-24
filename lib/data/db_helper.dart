@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:todoapp/data/Notes.dart';
+import 'package:todoapp/data/models/Notes.dart';
 
 class DatabaseHelper {
 
