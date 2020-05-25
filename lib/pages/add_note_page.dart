@@ -62,7 +62,7 @@ class AddNotePage extends StatelessWidget {
                     String title = titleController.text.trim();
                     String description = descController.text.trim();
                     if (title.isNotEmpty && description.isNotEmpty) {
-                      Notes note = Notes(title, description, false);
+                      Notes note = Notes(title, description, false, "");
                       Navigator.pop(context, note);
                     } else {
                       Scaffold.of(context).showSnackBar(snackBar);

@@ -14,7 +14,8 @@ class DatabaseHelper {
       "id INTEGER PRIMARY KEY,"
       "title TEXT,"
       "description TEXT,"
-      "isdone INTEGER"
+      "isdone INTEGER,"
+      "image TEXT"
       ")";
 
   DatabaseHelper._createInstance();
@@ -60,6 +61,7 @@ class DatabaseHelper {
         maps[i]['title'],
         maps[i]['description'],
         maps[i]['isdone'] == 1? true:false,
+        maps[i]['image'],
       );
     });
   }
