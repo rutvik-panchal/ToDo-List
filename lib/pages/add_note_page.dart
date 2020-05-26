@@ -1,10 +1,13 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/data/models/Notes.dart';
 
 class AddNotePage extends StatelessWidget {
   final titleController = TextEditingController();
   final descController = TextEditingController();
-
+  String imagePath = "";
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
@@ -53,35 +56,56 @@ class AddNotePage extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                child: RaisedButton(
-                  onPressed: () {
-                    final snackBar = SnackBar(
-                      duration: Duration(seconds: 1),
-                      content: Text('Please enter all the fields!'),
-                    );
-                    String title = titleController.text.trim();
-                    String description = descController.text.trim();
-                    if (title.isNotEmpty && description.isNotEmpty) {
-                      Notes note = Notes(title, description, false, "");
-                      Navigator.pop(context, note);
-                    } else {
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    }
-                  },
-                  color: Theme.of(context).primaryColor,
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    width: _size.width,
-                    child: Center(
-                      child: Text(
-                        'Add Note',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
+                child: Column(
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: () { selectImage(); },
+                      color: Theme.of(context).primaryColor,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        width: _size.width,
+                        child: Center(
+                          child: Text(
+                            'Add Image',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    RaisedButton(
+                      onPressed: () {
+                        final snackBar = SnackBar(
+                          duration: Duration(seconds: 1),
+                          content: Text('Please enter all the fields!'),
+                        );
+                        String title = titleController.text.trim();
+                        String description = descController.text.trim();
+                        if (title.isNotEmpty && description.isNotEmpty) {
+                          Notes note = Notes(title, description, false, imagePath);
+                          Navigator.pop(context, note);
+                        } else {
+                          Scaffold.of(context).showSnackBar(snackBar);
+                        }
+                      },
+                      color: Theme.of(context).primaryColor,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        width: _size.width,
+                        child: Center(
+                          child: Text(
+                            'Add Note',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -89,5 +113,9 @@ class AddNotePage extends StatelessWidget {
         ),
       ),
     );
+  }
+  void selectImage() async {
+    File image = await FilePicker.getFile(type: FileType.image);
+    this.imagePath = image.path;
   }
 }
